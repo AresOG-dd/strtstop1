@@ -1,5 +1,5 @@
-import telebot
 import logging
+import telebot
 import subprocess
 import json
 import time
@@ -13,8 +13,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 # Inbuilt function to set bot token and admin IDs
 def set_config():
     global TOKEN, ADMIN_IDS
-    TOKEN = "7788865701:AAFMGrYFkgq5RRLbL1SLmDZrrLdrfaOK__A"  # Replace with your bot token
-    ADMIN_IDS = [7163028849]  # Replace with your admin IDs as integers
+    TOKEN = "7420409067:AAHpSj_HeAJkhwQGi--u39IjCCVejGE_ul8"  # Replace with your bot token
+    ADMIN_IDS = [5052398493]  # Replace with your admin IDs as integers
 
 set_config()
 
@@ -194,6 +194,17 @@ def stop_attack(message):
         stop_attack_manual(message.from_user.id, target_ip, target_port)
     else:
         bot.send_message(message.chat.id, "*No attack details found to stop.*", parse_mode='Markdown')
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    if not is_user_approved(message.from_user.id):
+        send_not_approved_message(message.chat.id)
+        return
+
+    bot.send_message(message.chat.id, "*Welcome! Use the buttons below to interact with the bot.*", parse_mode='Markdown')
+    send_main_buttons(message.chat.id)
+
+
 
 # Improved polling function with error handling
 def run_bot():
